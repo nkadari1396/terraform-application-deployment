@@ -20,6 +20,11 @@ resource "aws_instance" "python" {
   destination = "/home/ec2-user/app.py"
 }
 
+provisioner "file" {
+  source      = "${path.module}/templates/"
+  destination = "/home/ec2-user/templates"
+}
+
   provisioner "remote-exec" {
     inline = [
       "sudo dnf install python3 python3-pip -y",
