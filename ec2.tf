@@ -1,25 +1,20 @@
-resource "aws_key_pair" "python" {
-  key_name   = "python-dev-key"
-  public_key = file("~/.ssh/python-dev-key.pub")
-}
-
 resource "aws_instance" "python" {
   ami           = "ami-0220d79f3f480ecf5"
   instance_type = "t3.micro"
   subnet_id     = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.main.id]
-  key_name      = aws_key_pair.python.key_name
-
+  
   tags = {
     Name = "${local.resource_name}"
   }
 
-  connection {
-    type        = "ssh"
-    host        = self.public_ip
-    user        = "ec2-user"
-    private_key = file("~/.ssh/python-dev-key")
-  }
+ connection {
+  type     = "ssh"
+  host     = self.public_ip
+  user     = "ec2-user"
+  password = "Dev0ps321"
+  timeout  = "5m"
+}
 
   provisioner "file" {
     source      = "${path.module}/app.py"
